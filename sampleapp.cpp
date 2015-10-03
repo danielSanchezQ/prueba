@@ -2,7 +2,6 @@
 #include "ui_sampleapp.h"
 #include <QFileDialog>
 #include <QImage>
-
 SampleApp::SampleApp(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SampleApp)
@@ -13,7 +12,8 @@ SampleApp::SampleApp(QWidget *parent) :
     img         =   new QPixmap();
     ui->image_view->setScene(scene);
 
-    connect(ui->actionOpen, &QAction::triggered, [this](){this->loadImage();});
+    connect(ui->actionOpen, &QAction::triggered,    [this](){this->loadImage();});
+    connect(ui->clear_b,    &QPushButton::clicked,  [this](){this->clear();});
 }
 
 SampleApp::~SampleApp()
@@ -28,14 +28,25 @@ QString SampleApp::get_filename_from_UI()
                                         "",
                                         tr("Image Files(*.png *.jpg *.bmp)"));
 }
-
-void SampleApp::loadImage()
+void SampleApp::custom_setImage()
 {
-    img->load(get_filename_from_UI());
     if(img_item != nullptr) img_item->setPixmap(*img);
     else
     {
         img_item = scene->addPixmap(*img);
         scene->addItem(img_item);
     }
+    ui->image_view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void SampleApp::loadImage()
+{
+    img->load(get_filename_from_UI());
+    custom_setImage();
+}
+
+void SampleApp::clear()
+{
+    img->load("");
+    custom_setImage();
 }

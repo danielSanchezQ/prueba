@@ -19,7 +19,8 @@ class SampleApp : public QMainWindow
 public:
     explicit SampleApp(QWidget *parent = 0);
     ~SampleApp();
-    void loadImage();
+
+
 
 private:
     Ui::SampleApp           *ui;
@@ -28,6 +29,10 @@ private:
     QPixmap                 *img;
 
     QString                 get_filename_from_UI();
+
+    void                    custom_setImage();
+    void                    loadImage();
+    void                    clear();
 };
 
 #endif // SAMPLEAPP_H
